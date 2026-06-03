@@ -1,0 +1,285 @@
+<!-- Klistra in hela detta block i ett WordPress-block av typen "Anpassad HTML" -->
+
+<section id="ava-quiz" class="ava-quiz">
+  <style>
+    #ava-quiz {
+      --ava-bg: #f7f4ef;
+      --ava-card: #ffffff;
+      --ava-text: #2b2926;
+      --ava-muted: #6f675f;
+      --ava-line: #e4ddd4;
+      --ava-accent: #70543e;
+      --ava-accent-light: #ede3d8;
+      --ava-ok: #446b4f;
+      background: var(--ava-bg);
+      color: var(--ava-text);
+      border-radius: 22px;
+      padding: 24px;
+      line-height: 1.55;
+      font-family: inherit;
+    }
+    #ava-quiz * { box-sizing: border-box; }
+    #ava-quiz .ava-header,
+    #ava-quiz .ava-card,
+    #ava-quiz .ava-results {
+      background: var(--ava-card);
+      border: 1px solid var(--ava-line);
+      border-radius: 18px;
+      padding: 22px;
+      margin: 18px 0;
+    }
+    #ava-quiz h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    #ava-quiz h3 {
+      margin: 0 0 6px;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+    #ava-quiz p { margin: 0 0 12px; }
+    #ava-quiz .ava-muted { color: var(--ava-muted); }
+    #ava-quiz .ava-question {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--ava-line);
+    }
+    #ava-quiz .ava-question:last-child { border-bottom: 0; }
+    #ava-quiz .ava-qtext { font-weight: 500; }
+    #ava-quiz .ava-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 38px);
+      gap: 7px;
+      align-items: center;
+    }
+    #ava-quiz .ava-choice {
+      display: grid;
+      place-items: center;
+      min-height: 38px;
+      border: 1px solid var(--ava-line);
+      border-radius: 12px;
+      cursor: pointer;
+      background: #fff;
+      font-weight: 700;
+      color: var(--ava-muted);
+      transition: .15s ease;
+    }
+    #ava-quiz .ava-choice:hover { border-color: var(--ava-accent); }
+    #ava-quiz .ava-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    #ava-quiz .ava-choice:has(input:checked) {
+      background: var(--ava-accent);
+      border-color: var(--ava-accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    #ava-quiz .ava-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--ava-bg);
+      border-top: 1px solid var(--ava-line);
+      padding-top: 16px;
+      margin-top: 18px;
+    }
+    #ava-quiz button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--ava-accent);
+      color: #fff;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    #ava-quiz button.ava-secondary {
+      background: #fff;
+      color: var(--ava-accent);
+      border: 1px solid var(--ava-line);
+    }
+    #ava-quiz .ava-results {
+      display: none;
+      border: 2px solid var(--ava-accent);
+    }
+    #ava-quiz .ava-result-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 220px) 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--ava-line);
+    }
+    #ava-quiz .ava-result-row:last-child { border-bottom: 0; }
+    #ava-quiz .ava-bar {
+      height: 16px;
+      background: var(--ava-accent-light);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    #ava-quiz .ava-bar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--ava-ok);
+      border-radius: 999px;
+    }
+    #ava-quiz .ava-top-result {
+      margin: 12px 0 18px;
+      padding: 14px;
+      background: var(--ava-accent-light);
+      border-radius: 16px;
+      color: var(--ava-accent);
+      font-weight: 700;
+    }
+    #ava-quiz .ava-warning {
+      display: none;
+      color: #8a3b2d;
+      font-weight: 700;
+      margin: 0;
+    }
+    @media (max-width: 760px) {
+      #ava-quiz { padding: 14px; }
+      #ava-quiz .ava-question { grid-template-columns: 1fr; }
+      #ava-quiz .ava-scale { grid-template-columns: repeat(5, 1fr); }
+      #ava-quiz .ava-result-row { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <div class="ava-header">
+    <h2>Din väg till andlighet – självtest</h2>
+    <p>Det här självtestet är inspirerat av boken Sacred Pathways av Gary Thomas. Boken bygger på insikten att människor är olika – också i sin andlighet. Det finns inte ett sätt att närma sig Gud, utan många. I boken beskrivs nio (här tio) olika vägar till andlighet – eller andliga temperament – där vi alla har lättare för vissa vägar och kan ha svårare för andra. Syftet med testet är att hjälpa dig att upptäcka vilken eller vilka andliga vägar som är mest naturliga för just dig. Det handlar inte om att värdera vissa vägar över andra, utan att bejaka mångfalden i hur vi kan leva i relation till det heliga. Testet kan också utmana dig att prova en andlig praktik som inte är din hemmamark – för att växa och fördjupas i tron.</p>
+    <p class="ava-muted">Läs varje påstående och välj det alternativ som stämmer bäst för dig. 1 = Stämmer inte alls, 5 = Stämmer helt. När du svarat på alla påståenden räknas ditt resultat ut automatiskt.</p>
+  </div>
+
+  <form class="ava-form">
+    <div class="ava-card ava-question-list"></div>
+  </form>
+
+  <div class="ava-actions">
+    <p class="ava-warning">Svara på alla påståenden innan du visar resultatet.</p>
+    <div>
+      <button type="button" class="ava-show-results">Visa resultat</button>
+      <button type="button" class="ava-secondary ava-reset">Börja om</button>
+    </div>
+  </div>
+
+  <div class="ava-results" aria-live="polite">
+    <h3>Ditt resultat</h3>
+    <div class="ava-top-result"></div>
+    <div class="ava-result-list"></div>
+  </div>
+
+  <script>
+    (function() {
+      const root = document.getElementById("ava-quiz");
+      const quiz = {"categories": [{"name": "Tillbedjaren", "description": "känner Guds närvaro starkt i lovsång och tillbedjan", "questions": ["De som känner mig skulle beskriva mig som entusiastisk under lovsång och tillbedjan.", "Gud berör mig varje gång jag är tillsammans med andra för att tillbe.", "Jag ser fram emot att gå på en gudstjänst, även när jag är trött.", "Jag känner mig lyckligast när jag får lovsjunga tillsammans med andra.", "Jag tycker att det inte finns några bra skäl från att utebli från en samling med lovsång och tillbedjan.", "Jag gillar hur alla världens problem, mina egna inräknade, tycks blekna bort helt när jag tillber Gud i kyrkan.", "När jag känner mig lätt överbelastad, finns det inget som hjälper mig på fötter igen så som en härlig lovsångssamling."]}, {"name": "Aktivisten", "description": "närmar sig Gud i kampen för rättvisa och i samhällsengagemang", "questions": ["Oavsett hur trött jag är, blir jag vanligtvis pigg när jag ställs inför en utmaning.", "Människor i min omgivning vet hur starkt jag känner för de saker jag håller på med.", "Jag upplever meningen med livet allra mest när jag åstadkommer saker.", "Motstånd motiverar och entusiasmerar mig.", "Jag känner mig verkligt nöjd, när jag ser människor som arbetar tillsammans för att nå ett speciellt mål", "Jag blir upprörd över människors apati i förhållande till världens orättvisor.", "Jag borde förmodligen ta mer tid till avkoppling, med jag älskar det jag håller på med."]}, {"name": "Den intellektuella", "description": "följer tankens väg – älskar teologi, analys och reflektion", "questions": ["Under en gudstjänst ser jag mest fram mot predikan.", "Jag har aldrig begripit mig på varför inte alla människor på djupet vill studera sådant de faktiskt bryr sig om.", "Människor hör av sig till mig när de söker kunskap i olika ämnen.", "När jag behöver fräschas upp i tanken, är en bra bok det som gör susen.", "Emellanåt ägnar jag så mycket tid till att sätta mig in i en fråga, så att jag inte hinner ta itu med den.", "Jag får som bäst insikter om Gud när jag fått en intellektuellt intressant teologisk reflexion utlagd för mig.", "Jag läser ofta många böcker och artiklar för att hitta lösningen på ett problem."]}, {"name": "Den sociala", "description": "känner andligt växande genom relationer och gemenskap", "questions": ["När jag har ett problem försöker jag hellre lösa det tillsammans med andra än för mig själv.", "Jag känner mig lättare till sinnes när jag umgås med människor jag känner och uppskattar.", "När jag är ensam för mycket, tenderar jag att förlora energi och bli en smula deprimerad.", "Jag upplever meningen med livet mest påtagligt i gemenskap med vänner.", "Jag förstår mig inte på människor som har svårt att berätta personliga saker för andra.", "När jag är trött, finns det ingenting mer uppiggande än att vara tillsammans med vänner.", "Människor i min omgivning beskriver mig som en relationsmänniska."]}, {"name": "Eremiten", "description": "finner Gud i tystnad, ensamhet och kontemplation", "questions": ["Den andliga verkligheten känns ibland mer verklig för mig än den fysiska.", "Jag känner en djup inre glädje när jag är på en stilla plats i avskildhet, utan saker som stör.", "Jag förstår inte att kristna kan vara så upptagna och ändå tro att de hör Guds röst.", "Min familj och vänner retar mig ibland för att jag är en sådan enstöring.", "När jag står inför en svårighet, känns det bäst för mig att vara ensam.", "Om sanningen ska fram, får jag skuldkänslor för att jag njuter så mycket av tystnad och avskildhet.", "Emellanåt ägnar jag alltför mycket tid till att tänka igenom de negativa saker människor säger om mig."]}, {"name": "Frisksportaren", "description": "närmar sig Gud genom fysisk aktivitet och kroppens rörelse", "questions": ["Jag tror inte att det går att skilja på kropp, själ och andre, de hänger ihop i varje ögonblick av livet.", "Jag kan ofta känna en intensiv tacksamhet över min kropp och dess funktioner.", "När jag tagit ut min fullständigt på tex ett träningspass så känner jag verkligen att jag lever.", "Jag tänker bättre om jag rör mig samtidigt.", "Varje församling borde erbjuda idrottsverksamhet.", "En sund själ i en sund kropp är mitt livsmotto.", "När jag sportar så känner jag inte bara social gemenskap, utan rentav som en del av hela skapelsen"]}, {"name": "Omhändertagaren", "description": "upplever andlighet i att tjäna andra praktiskt", "questions": ["Jag blir distraherad om jag under ett möte eller en gudstjänst upptäcker att detaljer i omgivningen som inte tagits omhand på rätt sätt.", "Att hjälpa andra är lätt för mig, t.o.m. då jag har egna problem.", "Jag känner som störst mening och hopp när jag hjälper någon, det kan vara en sjuk granne, en arbetslös vän eller liknande.", "Människor omkring mig säger emellanåt att de beundrar min medkänsla med andra.", "Även när jag själv är trött, har jag kraft och motivation att hjälpa andra som har problem.", "Jag känner mig som lyckligast när någon har problem och jag kan hjälpa dem med att lösa problemet.", "Jag upplever Guds närvaro när jag vägleder någon som kämpar med olika saker i sitt liv."]}, {"name": "Skapelsevännen", "description": "möter skaparen med naturen som sin katedral", "questions": ["En vacker solnedgång kan beröra mig andligen på ett sätt som gör att jag för tillfället glömmer allt som oroar min tanke.", "När jag står inför ett svårt beslut, känner jag mig dragen till promenader i skogen, på stranden eller någon annanstans – utomhus.", "Jag känner starkare känslor och mer gemenskap med Gud i naturen än i församlingen.", "Saker och företeelser i naturen ger mig lärdomar om Gud.", "En god högre krafts närvaro blir särskilt påtaglig, när jag möter en vacker vy i naturen.", "Människor som känner mig vet att när jag inte går att nå, är jag ute i skogen, på sjön, vid en strand eller någon annanstans i vacker natur.", "När jag ser skönheten i naturen, är det någonting som berörs i mitt inre som det är svårt att förklara."]}, {"name": "Traditionalisten", "description": "finner det heliga genom liturgi, ritualer och traditioner", "questions": ["Jag trivs på en Gudstjänst när jag känner igen mig i allt som sker, särskilt när det finns sådant som påminner om gudstjänster i min barndom.", "Ritualer och traditioner är viktiga för mig.", "Slitstarka visdomsord är en viktig skatt för mig.", "Jag ber gärna samma bön eller på samma sätt regelbundet.", "Jag har många \"heliga föremål\" som jag sparat föralltid eller bär med mig, som symboliserar värden och personer som är värdefulla för mig.", "Det är respektlöst att fira halloween enligt amerikansk tradition, i samband med vår fina svenska tradition alla helgons dag.", "Det finns ett värde i att göra som man alltid gjort."]}, {"name": "Upplevaren", "description": "möter Gud genom konst, skönhet och upplevelser med alla sinnen", "questions": ["Jag känner min som närmast Gud när jag är i en kyrka som låter mina sinnen komma till liv - där jag kan se, lukta, höra och nästan smaka upplevelsen.", "Jag älskar nattvardsmässor, eftersom det innebär att jag rent fysiskt får ta in Gud.", "Jag uppskattar rökelse.", "Det är svårt för mig att uppskatta intentionen, om det är dålig kvalité på den konst eller musik som framförs, på tex en Gudstjänst.", "Jag önskar så innerligt att jag hade tid att gå på mer museum och konserter, eftersom det ger mig så mycket.", "Jag gillar (eller skulle gilla att prova på) att måla, spela teater eller musik för att uttrycka mig och förstå mer om sådant som är viktigt för mig.", "Det är trist med kyrkor som är medvetet enkla och avskalade, som saknar storslagen arkitektur och konst på väggarna."]}], "items": [{"categoryIndex": 0, "question": "De som känner mig skulle beskriva mig som entusiastisk under lovsång och tillbedjan."}, {"categoryIndex": 1, "question": "Oavsett hur trött jag är, blir jag vanligtvis pigg när jag ställs inför en utmaning."}, {"categoryIndex": 2, "question": "Under en gudstjänst ser jag mest fram mot predikan."}, {"categoryIndex": 3, "question": "När jag har ett problem försöker jag hellre lösa det tillsammans med andra än för mig själv."}, {"categoryIndex": 4, "question": "Den andliga verkligheten känns ibland mer verklig för mig än den fysiska."}, {"categoryIndex": 5, "question": "Jag tror inte att det går att skilja på kropp, själ och andre, de hänger ihop i varje ögonblick av livet."}, {"categoryIndex": 6, "question": "Jag blir distraherad om jag under ett möte eller en gudstjänst upptäcker att detaljer i omgivningen som inte tagits omhand på rätt sätt."}, {"categoryIndex": 7, "question": "En vacker solnedgång kan beröra mig andligen på ett sätt som gör att jag för tillfället glömmer allt som oroar min tanke."}, {"categoryIndex": 8, "question": "Jag trivs på en Gudstjänst när jag känner igen mig i allt som sker, särskilt när det finns sådant som påminner om gudstjänster i min barndom."}, {"categoryIndex": 9, "question": "Jag känner min som närmast Gud när jag är i en kyrka som låter mina sinnen komma till liv - där jag kan se, lukta, höra och nästan smaka upplevelsen."}, {"categoryIndex": 3, "question": "Jag känner mig lättare till sinnes när jag umgås med människor jag känner och uppskattar."}, {"categoryIndex": 4, "question": "Jag känner en djup inre glädje när jag är på en stilla plats i avskildhet, utan saker som stör."}, {"categoryIndex": 5, "question": "Jag kan ofta känna en intensiv tacksamhet över min kropp och dess funktioner."}, {"categoryIndex": 6, "question": "Att hjälpa andra är lätt för mig, t.o.m. då jag har egna problem."}, {"categoryIndex": 7, "question": "När jag står inför ett svårt beslut, känner jag mig dragen till promenader i skogen, på stranden eller någon annanstans – utomhus."}, {"categoryIndex": 8, "question": "Ritualer och traditioner är viktiga för mig."}, {"categoryIndex": 9, "question": "Jag älskar nattvardsmässor, eftersom det innebär att jag rent fysiskt får ta in Gud."}, {"categoryIndex": 0, "question": "Gud berör mig varje gång jag är tillsammans med andra för att tillbe."}, {"categoryIndex": 1, "question": "Människor i min omgivning vet hur starkt jag känner för de saker jag håller på med."}, {"categoryIndex": 2, "question": "Jag har aldrig begripit mig på varför inte alla människor på djupet vill studera sådant de faktiskt bryr sig om."}, {"categoryIndex": 6, "question": "Jag känner som störst mening och hopp när jag hjälper någon, det kan vara en sjuk granne, en arbetslös vän eller liknande."}, {"categoryIndex": 7, "question": "Jag känner starkare känslor och mer gemenskap med Gud i naturen än i församlingen."}, {"categoryIndex": 8, "question": "Slitstarka visdomsord är en viktig skatt för mig."}, {"categoryIndex": 9, "question": "Jag uppskattar rökelse."}, {"categoryIndex": 0, "question": "Jag ser fram emot att gå på en gudstjänst, även när jag är trött."}, {"categoryIndex": 1, "question": "Jag upplever meningen med livet allra mest när jag åstadkommer saker."}, {"categoryIndex": 2, "question": "Människor hör av sig till mig när de söker kunskap i olika ämnen."}, {"categoryIndex": 3, "question": "När jag är ensam för mycket, tenderar jag att förlora energi och bli en smula deprimerad."}, {"categoryIndex": 4, "question": "Jag förstår inte att kristna kan vara så upptagna och ändå tro att de hör Guds röst."}, {"categoryIndex": 5, "question": "När jag tagit ut min fullständigt på tex ett träningspass så känner jag verkligen att jag lever."}, {"categoryIndex": 9, "question": "Det är svårt för mig att uppskatta intentionen, om det är dålig kvalité på den konst eller musik som framförs, på tex en Gudstjänst."}, {"categoryIndex": 0, "question": "Jag känner mig lyckligast när jag får lovsjunga tillsammans med andra."}, {"categoryIndex": 1, "question": "Motstånd motiverar och entusiasmerar mig."}, {"categoryIndex": 2, "question": "När jag behöver fräschas upp i tanken, är en bra bok det som gör susen."}, {"categoryIndex": 3, "question": "Jag upplever meningen med livet mest påtagligt i gemenskap med vänner."}, {"categoryIndex": 4, "question": "Min familj och vänner retar mig ibland för att jag är en sådan enstöring."}, {"categoryIndex": 5, "question": "Jag tänker bättre om jag rör mig samtidigt."}, {"categoryIndex": 6, "question": "Människor omkring mig säger emellanåt att de beundrar min medkänsla med andra."}, {"categoryIndex": 7, "question": "Saker och företeelser i naturen ger mig lärdomar om Gud."}, {"categoryIndex": 8, "question": "Jag ber gärna samma bön eller på samma sätt regelbundet."}, {"categoryIndex": 2, "question": "Emellanåt ägnar jag så mycket tid till att sätta mig in i en fråga, så att jag inte hinner ta itu med den."}, {"categoryIndex": 3, "question": "Jag förstår mig inte på människor som har svårt att berätta personliga saker för andra."}, {"categoryIndex": 4, "question": "När jag står inför en svårighet, känns det bäst för mig att vara ensam."}, {"categoryIndex": 5, "question": "Varje församling borde erbjuda idrottsverksamhet."}, {"categoryIndex": 6, "question": "Även när jag själv är trött, har jag kraft och motivation att hjälpa andra som har problem."}, {"categoryIndex": 7, "question": "En god högre krafts närvaro blir särskilt påtaglig, när jag möter en vacker vy i naturen."}, {"categoryIndex": 8, "question": "Jag har många \"heliga föremål\" som jag sparat föralltid eller bär med mig, som symboliserar värden och personer som är värdefulla för mig."}, {"categoryIndex": 9, "question": "Jag önskar så innerligt att jag hade tid att gå på mer museum och konserter, eftersom det ger mig så mycket."}, {"categoryIndex": 0, "question": "Jag tycker att det inte finns några bra skäl från att utebli från en samling med lovsång och tillbedjan."}, {"categoryIndex": 1, "question": "Jag känner mig verkligt nöjd, när jag ser människor som arbetar tillsammans för att nå ett speciellt mål"}, {"categoryIndex": 5, "question": "En sund själ i en sund kropp är mitt livsmotto."}, {"categoryIndex": 6, "question": "Jag känner mig som lyckligast när någon har problem och jag kan hjälpa dem med att lösa problemet."}, {"categoryIndex": 7, "question": "Människor som känner mig vet att när jag inte går att nå, är jag ute i skogen, på sjön, vid en strand eller någon annanstans i vacker natur."}, {"categoryIndex": 8, "question": "Det är respektlöst att fira halloween enligt amerikansk tradition, i samband med vår fina svenska tradition alla helgons dag."}, {"categoryIndex": 9, "question": "Jag gillar (eller skulle gilla att prova på) att måla, spela teater eller musik för att uttrycka mig och förstå mer om sådant som är viktigt för mig."}, {"categoryIndex": 0, "question": "Jag gillar hur alla världens problem, mina egna inräknade, tycks blekna bort helt när jag tillber Gud i kyrkan."}, {"categoryIndex": 1, "question": "Jag blir upprörd över människors apati i förhållande till världens orättvisor."}, {"categoryIndex": 2, "question": "Jag får som bäst insikter om Gud när jag fått en intellektuellt intressant teologisk reflexion utlagd för mig."}, {"categoryIndex": 3, "question": "När jag är trött, finns det ingenting mer uppiggande än att vara tillsammans med vänner."}, {"categoryIndex": 4, "question": "Om sanningen ska fram, får jag skuldkänslor för att jag njuter så mycket av tystnad och avskildhet."}, {"categoryIndex": 8, "question": "Det finns ett värde i att göra som man alltid gjort."}, {"categoryIndex": 9, "question": "Det är trist med kyrkor som är medvetet enkla och avskalade, som saknar storslagen arkitektur och konst på väggarna."}, {"categoryIndex": 0, "question": "När jag känner mig lätt överbelastad, finns det inget som hjälper mig på fötter igen så som en härlig lovsångssamling."}, {"categoryIndex": 1, "question": "Jag borde förmodligen ta mer tid till avkoppling, med jag älskar det jag håller på med."}, {"categoryIndex": 2, "question": "Jag läser ofta många böcker och artiklar för att hitta lösningen på ett problem."}, {"categoryIndex": 3, "question": "Människor i min omgivning beskriver mig som en relationsmänniska."}, {"categoryIndex": 4, "question": "Emellanåt ägnar jag alltför mycket tid till att tänka igenom de negativa saker människor säger om mig."}, {"categoryIndex": 5, "question": "När jag sportar så känner jag inte bara social gemenskap, utan rentav som en del av hela skapelsen"}, {"categoryIndex": 6, "question": "Jag upplever Guds närvaro när jag vägleder någon som kämpar med olika saker i sitt liv."}, {"categoryIndex": 7, "question": "När jag ser skönheten i naturen, är det någonting som berörs i mitt inre som det är svårt att förklara."}]};
+      const categories = quiz.categories;
+      const items = quiz.items;
+
+      function interpretation(score) {
+        if (score <= 10) return "Du tar avstånd från den här vägen till andlighet.";
+        if (score <= 15) return "Den här vägen fungerar inte särskilt bra för dig.";
+        if (score <= 25) return "Du gillar den ibland. Vissa delar fungerar.";
+        if (score <= 30) return "Detta är en viktig väg till andlighet för dig.";
+        return "Grattis! Du har en motorväg till andlighet - det här är en väg där du verkligen möter Gud.";
+      }
+
+      function renderQuiz() {
+        const list = root.querySelector(".ava-question-list");
+        list.innerHTML = "";
+        items.forEach(function(item, index) {
+          const row = document.createElement("div");
+          row.className = "ava-question";
+          row.setAttribute("data-category-index", item.categoryIndex);
+          row.innerHTML =
+            '<div class="ava-qtext">' + (index + 1) + '. ' + item.question + '</div>' +
+            '<div class="ava-scale" role="radiogroup" aria-label="Fråga ' + (index + 1) + '">' +
+              [1,2,3,4,5].map(function(value) {
+                return '<label class="ava-choice" title="' + value + '">' +
+                  '<input type="radio" name="ava-q' + index + '" value="' + value + '" required>' +
+                  '<span>' + value + '</span>' +
+                '</label>';
+              }).join("") +
+            '</div>';
+          list.appendChild(row);
+        });
+      }
+
+      function scores() {
+        const totals = categories.map(function(cat) {
+          return Object.assign({}, cat, { score: 0, answered: 0, max: 35 });
+        });
+
+        items.forEach(function(item, index) {
+          const checked = root.querySelector('input[name="ava-q' + index + '"]:checked');
+          if (checked) {
+            totals[item.categoryIndex].score += Number(checked.value);
+            totals[item.categoryIndex].answered++;
+          }
+        });
+
+        return totals;
+      }
+
+      function showResults() {
+        const allScores = scores();
+        const complete = allScores.every(function(cat) {
+          return cat.answered === 7;
+        });
+        const warning = root.querySelector(".ava-warning");
+
+        if (!complete) {
+          warning.style.display = "block";
+          return;
+        }
+
+        warning.style.display = "none";
+        const sorted = allScores.slice().sort(function(a, b) { return b.score - a.score; });
+        const highest = sorted[0].score;
+        const winners = sorted.filter(function(cat) { return cat.score === highest; });
+
+        root.querySelector(".ava-top-result").textContent =
+          winners.length === 1
+            ? "Din tydligaste väg just nu är: " + winners[0].name + "."
+            : "Dina tydligaste vägar just nu är: " + winners.map(function(w) { return w.name; }).join(", ") + ".";
+
+        const resultList = root.querySelector(".ava-result-list");
+        resultList.innerHTML = "";
+        sorted.forEach(function(cat) {
+          const row = document.createElement("div");
+          row.className = "ava-result-row";
+          row.innerHTML =
+            '<div><strong>' + cat.name + '</strong><br><span class="ava-muted">' + cat.description + '</span></div>' +
+            '<div class="ava-bar" aria-hidden="true"><span style="width: ' + Math.round(cat.score / 35 * 100) + '%"></span></div>' +
+            '<div><strong>' + interpretation(cat.score) + '</strong></div>';
+          resultList.appendChild(row);
+        });
+
+        const results = root.querySelector(".ava-results");
+        results.style.display = "block";
+        results.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function resetQuiz() {
+        root.querySelector(".ava-form").reset();
+        root.querySelector(".ava-results").style.display = "none";
+        root.querySelector(".ava-warning").style.display = "none";
+        root.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      renderQuiz();
+      root.querySelector(".ava-show-results").addEventListener("click", showResults);
+      root.querySelector(".ava-reset").addEventListener("click", resetQuiz);
+    })();
+  </script>
+</section>
